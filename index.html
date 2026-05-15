@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>品牌官网</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --nav-bg: rgba(245,245,247,0.85);
+      --border: rgba(0,0,0,0.08);
+      --radius: 18px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 48px;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .nav-logo {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px; font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px; color: var(--text-primary);
+      text-decoration: none; opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-right { display: flex; gap: 16px; align-items: center; }
+
+    .btn-login {
+      font-size: 13px; font-family: inherit;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 980px;
+      padding: 6px 16px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-login:hover { background: var(--accent-hover); transform: scale(1.03); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+      background: linear-gradient(180deg, #fff 0%, #f5f5f7 100%);
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,113,227,0.10), transparent);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(42px, 7vw, 84px);
+      font-weight: 600; line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
+    }
+
+    .hero p {
+      font-size: clamp(16px, 2vw, 22px);
+      color: var(--text-secondary);
+      max-width: 580px; line-height: 1.6;
+      margin-bottom: 40px;
+      opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-cta {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
+    }
+
+    .btn-primary {
+      font-family: inherit; font-size: 15px;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 980px;
+      padding: 14px 30px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: scale(1.04);
+      box-shadow: 0 8px 24px rgba(0,113,227,0.3);
+    }
+
+    .btn-ghost {
+      font-family: inherit; font-size: 15px;
+      background: transparent; color: var(--accent);
+      border: 1.5px solid var(--accent);
+      border-radius: 980px;
+      padding: 13px 30px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { background: rgba(0,113,227,0.07); transform: scale(1.04); }
+
+    .hero-visual {
+      margin-top: 70px; width: 100%; max-width: 900px;
+      height: 380px;
+      background: linear-gradient(135deg, #e8e8ed 0%, #d2d2d7 100%);
+      border-radius: 24px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary); font-size: 15px;
+      opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 60%);
+    }
+
+    .hero-visual span { position: relative; z-index: 1; }
+
+    /* ── FEATURES ── */
+    .section {
+      padding: 100px 24px;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 600; text-align: center;
+      margin-bottom: 12px; line-height: 1.1;
+    }
+
+    .section-sub {
+      font-size: 17px; color: var(--text-secondary);
+      text-align: center; margin-bottom: 64px;
+      max-width: 520px; margin-inline: auto; margin-bottom: 64px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      border: 1px solid var(--border);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.08);
+    }
+
+    .feature-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #e8f0fb, #c5d8f8);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 19px; font-weight: 600; margin-bottom: 10px;
+    }
+    .feature-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ── SHOWCASE STRIP ── */
+    .showcase {
+      background: #1d1d1f; color: #f5f5f7;
+      padding: 100px 24px;
+    }
+
+    .showcase-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center;
+    }
+
+    .showcase h2 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(28px, 4vw, 48px); font-weight: 600;
+      line-height: 1.1; margin-bottom: 20px;
+    }
+
+    .showcase p { font-size: 17px; color: #a1a1a6; line-height: 1.7; margin-bottom: 28px; }
+
+    .btn-white {
+      font-family: inherit; font-size: 15px;
+      background: #fff; color: #1d1d1f;
+      border: none; border-radius: 980px;
+      padding: 14px 30px; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-white:hover { opacity: 0.9; transform: scale(1.04); }
+
+    .showcase-img {
+      width: 100%; aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #2d2d2f 0%, #3a3a3c 100%);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      color: #6e6e73; font-size: 14px;
+    }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      padding: 100px 24px;
+      text-align: center;
+    }
+
+    .cta-banner h2 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(28px, 4vw, 52px); font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .cta-banner p { font-size: 17px; color: var(--text-secondary); margin-bottom: 36px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #f5f5f7;
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; }
+    .footer-links a:hover { color: var(--text-primary); }
+
+    footer .copy { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── LOGIN MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 48px 44px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.2);
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.3s, opacity 0.25s;
+      opacity: 0;
+    }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); opacity: 1; }
+
+    .modal h2 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 26px; font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .modal .subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+
+    .form-group input {
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px; font-family: inherit;
+      background: #f5f5f7;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,113,227,0.15);
+      background: #fff;
+    }
+
+    .btn-submit {
+      width: 100%; margin-top: 8px;
+      font-family: inherit; font-size: 15px; font-weight: 500;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 980px;
+      padding: 14px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { background: var(--accent-hover); transform: scale(1.02); }
+
+    .modal-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+    .modal-divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+    .modal-divider span { font-size: 12px; color: var(--text-secondary); }
+
+    .modal-footer-text {
+      text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 20px;
+    }
+    .modal-footer-text a { color: var(--accent); text-decoration: none; }
+
+    .close-btn {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      font-size: 20px; color: var(--text-secondary);
+      line-height: 1; padding: 4px;
+    }
+    .modal-wrap { position: relative; }
+
+    .msg {
+      font-size: 14px; padding: 12px 16px; border-radius: 10px;
+      margin-bottom: 16px; display: none;
+    }
+    .msg.success { background: #e3f0e6; color: #1a7a32; display: block; }
+    .msg.error   { background: #fdecea; color: #c0392b; display: block; }
+
+    /* ── ANIMS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .showcase-inner { grid-template-columns: 1fr; }
+      .modal { padding: 36px 28px; margin: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">品牌</a>
+  <ul class="nav-links">
+    <li><a href="#features">产品</a></li>
+    <li><a href="#showcase">特色</a></li>
+    <li><a href="#cta">关于我们</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-login" onclick="openModal()">登录 / 注册</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">全新体验 · 即将到来</p>
+  <h1>重新定义<br>你的生活方式</h1>
+  <p>卓越品质，精心设计。每一个细节都经过深思熟虑，只为带给你前所未有的体验。</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="openModal()">立即体验</button>
+    <button class="btn-ghost">了解更多</button>
+  </div>
+  <div class="hero-visual">
+    <span>产品主视觉占位区域</span>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <h2 class="section-title">为什么选择我们</h2>
+  <p class="section-sub">我们将极致工艺与前沿技术完美融合，为每一位用户创造非凡价值。</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">✦</div>
+      <h3>卓越品质</h3>
+      <p>精选顶级材料，每道工序严格把关，确保产品经久耐用，历久弥新。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>极速体验</h3>
+      <p>先进技术架构，带来流畅无阻的使用体验，让效率提升看得见。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡</div>
+      <h3>安全可信</h3>
+      <p>多重安全防护机制，全面保障您的隐私与数据安全，让您用得放心。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">♻</div>
+      <h3>绿色环保</h3>
+      <p>坚持可持续发展理念，在产品全生命周期中践行对地球的承诺。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="showcase" id="showcase">
+  <div class="showcase-inner">
+    <div>
+      <h2>非凡设计，<br>触手可及</h2>
+      <p>每一条线条、每一处弧度，都承载着我们对完美的执着追求。设计不只是外观，更是与您生活的深度连接。</p>
+      <button class="btn-white">探索设计</button>
+    </div>
+    <div class="showcase-img">产品展示图占位</div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner" id="cta">
+  <h2>准备好开启<br>全新体验了吗？</h2>
+  <p>加入我们，成为第一批体验者，享受专属优惠与特权服务。</p>
+  <button class="btn-primary" style="font-size:16px;padding:16px 36px;" onclick="openModal()">免费注册</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="copy">© 2025 品牌. 保留所有权利。</span>
+    <div class="footer-links">
+      <a href="#">隐私政策</a>
+      <a href="#">使用条款</a>
+      <a href="#">联系我们</a>
+      <a href="#">帮助中心</a>
+    </div>
+  </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-wrap">
+    <div class="modal" id="modal">
+      <button class="close-btn" onclick="closeModal()">✕</button>
+      <h2 id="modalTitle">欢迎回来</h2>
+      <p class="subtitle" id="modalSub">登录您的账号以继续使用</p>
+
+      <div id="msgBox" class="msg"></div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label>邮箱 / 手机号</label>
+          <input type="text" id="loginId" placeholder="请输入邮箱或手机号" />
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" id="loginPwd" placeholder="请输入密码" />
+        </div>
+        <button class="btn-submit" onclick="handleLogin()">登录</button>
+        <div class="modal-divider"><hr/><span>或</span><hr/></div>
+        <p class="modal-footer-text">还没有账号？<a href="#" onclick="switchToRegister()">立即注册</a></p>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label>邮箱</label>
+          <input type="email" id="regEmail" placeholder="请输入邮箱" />
+        </div>
+        <div class="form-group">
+          <label>手机号</label>
+          <input type="tel" id="regPhone" placeholder="请输入手机号（可选）" />
+        </div>
+        <div class="form-group">
+          <label>设置密码</label>
+          <input type="password" id="regPwd" placeholder="至少 6 位字符" />
+        </div>
+        <button class="btn-submit" onclick="handleRegister()">注册账号</button>
+        <p class="modal-footer-text" style="margin-top:16px;">已有账号？<a href="#" onclick="switchToLogin()">直接登录</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── users store (in-memory) ──
+  const users = {};
+
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    clearMsg();
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  function switchToRegister() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+    document.getElementById('modalTitle').textContent = '创建账号';
+    document.getElementById('modalSub').textContent = '注册即可享受全部功能';
+    clearMsg();
+  }
+
+  function switchToLogin() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('modalTitle').textContent = '欢迎回来';
+    document.getElementById('modalSub').textContent = '登录您的账号以继续使用';
+    clearMsg();
+  }
+
+  function showMsg(text, type) {
+    const box = document.getElementById('msgBox');
+    box.textContent = text;
+    box.className = 'msg ' + type;
+  }
+
+  function clearMsg() {
+    const box = document.getElementById('msgBox');
+    box.textContent = '';
+    box.className = 'msg';
+  }
+
+  function handleLogin() {
+    const id  = document.getElementById('loginId').value.trim();
+    const pwd = document.getElementById('loginPwd').value;
+    if (!id || !pwd) { showMsg('请填写完整信息', 'error'); return; }
+
+    if (users[id] && users[id] === pwd) {
+      showMsg('登录成功！欢迎回来 🎉', 'success');
+      setTimeout(closeModal, 1500);
+    } else if (!users[id]) {
+      showMsg('账号不存在，请先注册', 'error');
+    } else {
+      showMsg('密码错误，请重试', 'error');
+    }
+  }
+
+  function handleRegister() {
+    const email = document.getElementById('regEmail').value.trim();
+    const pwd   = document.getElementById('regPwd').value;
+    if (!email || !pwd) { showMsg('邮箱和密码不能为空', 'error'); return; }
+    if (pwd.length < 6) { showMsg('密码至少需要 6 位', 'error'); return; }
+    if (users[email])   { showMsg('该邮箱已注册，请直接登录', 'error'); return; }
+
+    users[email] = pwd;
+    showMsg('注册成功！欢迎加入 🎉', 'success');
+    setTimeout(() => { switchToLogin(); clearMsg(); }, 1500);
+  }
+
+  // Keyboard ESC to close
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
